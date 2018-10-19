@@ -64,16 +64,65 @@ public class MainApplication extends Application implements ReactApplication {
     public void onCreate() {
         super.onCreate();
 
-        Log.i("TEST", "onCreate");
         AssetManager assetManager = getAssets();
         byte[] key = null;
 
+        // save key
+        /*
         try{
             key = generateKey("android");
+
+            try
+            {
+                outputStream = new FileOutputStream(new File(getExternalFilesDir(null), "key"));
+                outputStream.write(key);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    outputStream.close();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+        */
 
+        // load key
+        try
+        {
+            inputStream = assetManager.open("key", AssetManager.ACCESS_BUFFER);
+            key = new byte[16];
+            inputStream.read(key);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                inputStream.close();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        // make encrypt file
+        /*
         try
         {
             inputStream = assetManager.open("index.android.bundle", AssetManager.ACCESS_BUFFER);
@@ -111,11 +160,14 @@ public class MainApplication extends Application implements ReactApplication {
                 e.printStackTrace();
             }
         }
+        */
 
 
+        // make decrypt file
         try
         {
-            inputStream = new FileInputStream(new File(getExternalFilesDir(null), "index.android.bundle.enc"));
+            //inputStream = new FileInputStream(new File(getExternalFilesDir(null), "index.android.bundle.enc"));
+            inputStream = assetManager.open("index.android.bundle.enc", AssetManager.ACCESS_BUFFER);
             bufferedInputStream = new BufferedInputStream(inputStream);
             outputStream = new FileOutputStream(new File(getExternalFilesDir(null), "index.android.bundle.enc.dec"));
             bufferedOutputStream = new BufferedOutputStream(outputStream);
@@ -146,7 +198,6 @@ public class MainApplication extends Application implements ReactApplication {
             }
         }
 
-        Log.i("TEST", "decode finish");
         SoLoader.init(this, /* native exopackage */ false);
     }
 
