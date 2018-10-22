@@ -1,2 +1,2 @@
 # reactnative_appsec
-React Native AppSec Sample 
+React Native JavaScript Bundle Encoding/Decoding Sample 
